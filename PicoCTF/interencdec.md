@@ -1,0 +1,2 @@
+
+<https://gchq.github.io/CyberChef/#recipe=From_Base64('A-Za-z0-9%2B/%3D',true,false)Find_/_Replace(%7B'option':'Regex','string':'b%5C''%7D,'',true,false,true,false)Find_/_Replace(%7B'option':'Regex','string':'%5C''%7D,'',true,false,true,false)From_Base64('A-Za-z0-9%2B/%3D',true,false)ROT13_Brute_Force(true,true,false,100,0,true,'picoCTF')&input=WWlka00wSnhaR3R3UWxSWWRIRmhSM2cyWVVoc1ptRjZUbkZsVkd3eldWUk9jbGd5YTNsTlJGSnZZVEp2TW1aUlBUMG5DZz09>

