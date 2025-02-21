@@ -1,6 +1,4 @@
 
 ```bash
-ssh ctf-player@titan.picoctf.net -p 59220
+sshpass -p '1db87a14' ssh -o StrictHostKeyChecking=no -p 59220 ctf-player@titan.picoctf.net
 ```
-
-1db87a14
